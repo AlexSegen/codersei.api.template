@@ -2,22 +2,7 @@ const { v4: uuid } = require("uuid");
 const aqp = require("api-query-params");
 
 const Model = require("../models/task.model");
-
-function serviceResult(code, data, message, error) {
-  if (error instanceof Error) {
-    return {
-      code: code,
-      error,
-      message: message || error.message,
-    };
-  }
-
-  return {
-    code,
-    data,
-    message,
-  };
-}
+const {serviceResult} = require("../helpers/serviceResult");
 
 const getAall = async (query) => {
   const { filter, limit, sort } = aqp(query);

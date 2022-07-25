@@ -17,17 +17,21 @@
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
     "api-query-params": "^5.3.1",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "cloudinary": "1.21",
     "consola": "^2.15.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.6",
     "morgan": "^1.10.0",
     "multer": "1.4",
     "multer-storage-cloudinary": "2.2",
     "nodemailer": "6.4",
+    "utility": "^1.17.0",
     "uuid": "^8.3.2"
   }
 }

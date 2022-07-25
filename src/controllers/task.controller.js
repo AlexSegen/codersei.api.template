@@ -2,9 +2,9 @@ const taskService = require("../services/task.service");
 
 const getAll = async (req, res) => {
   try {
-    const { code, data, message } = await taskService.getAall(req.query);
+    const { statusCode, data, message } = await taskService.getAall(req.query);
 
-    return res.status(code).json({ data, message });
+    return res.status(statusCode).json({ data, message });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -12,9 +12,9 @@ const getAll = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
-    const { code, data, message } = await taskService.getOne(req.params.id);
+    const { statusCode, data, message } = await taskService.getOne(req.params.id);
 
-    return res.status(code).json({
+    return res.status(statusCode).json({
       data,
       message,
     });
@@ -31,12 +31,12 @@ const create = async (req, res) => {
       return res.status(400).json({ message: "Required fields missing." });
     }
 
-    const { code, data, message } = await taskService.create({
+    const { statusCode, data, message } = await taskService.create({
       title: body.title,
       description: body.description,
     });
 
-    return res.status(code).json({ data, message });
+    return res.status(statusCode).json({ data, message });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -46,13 +46,13 @@ const update = async (req, res) => {
   try {
     const { title, description, completed } = req.body;
 
-    const { code, data, message } = await taskService.update(req.params.id, {
+    const { statusCode, data, message } = await taskService.update(req.params.id, {
       title,
       description,
       completed,
     });
 
-    return res.status(code).json({ data, message });
+    return res.status(statusCode).json({ data, message });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -60,9 +60,9 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    const { code, data, message } = await taskService.remove(req.params.id);
+    const { statusCode, data, message } = await taskService.remove(req.params.id);
 
-    return res.status(code).json({ data, message });
+    return res.status(statusCode).json({ data, message });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
