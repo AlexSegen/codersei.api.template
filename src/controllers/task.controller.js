@@ -6,7 +6,7 @@ const getAll = async (req, res) => {
 
     return res.status(statusCode).json({ data, message });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -19,7 +19,7 @@ const getOne = async (req, res) => {
       message,
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -27,9 +27,8 @@ const create = async (req, res) => {
   try {
     const { body } = req;
 
-    if (!body.title || !body.description) {
+    if (!body.title || !body.description)
       return res.status(400).json({ message: "Required fields missing." });
-    }
 
     const { statusCode, data, message } = await taskService.create({
       title: body.title,
@@ -38,7 +37,7 @@ const create = async (req, res) => {
 
     return res.status(statusCode).json({ data, message });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -54,7 +53,7 @@ const update = async (req, res) => {
 
     return res.status(statusCode).json({ data, message });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -64,7 +63,7 @@ const remove = async (req, res) => {
 
     return res.status(statusCode).json({ data, message });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 

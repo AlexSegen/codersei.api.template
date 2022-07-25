@@ -3,17 +3,25 @@ const authService = require("../services/auth.service");
 
 const register = async (req, res) => {
   try {
+
+		if (!req.body.email || !req.body.password)
+			return res.status(400).json({ message: "Required fields missing." });
+
     const user = req.body;
     const { statusCode, data, message } = await authService.register(user);
 
     return res.status(statusCode).json({ data, message });
   } catch (error) {
-    return res.status(500).json({  error: error.message });
+    return res.status(500).json({  message: error.message });
   }
 };
 
 const login = async (req, res) => {
   try {
+
+		if (!req.body.email || !req.body.password)
+			return res.status(400).json({ message: "Required fields missing." });
+
     const user = req.body;
     const { statusCode, data, message } = await authService.login(user);
 
@@ -34,7 +42,7 @@ const login = async (req, res) => {
         message: error.message,
       });
 
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -55,7 +63,7 @@ const profile = async (req, res) => {
         message: error.message,
       });
 
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
