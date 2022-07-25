@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const v1WorkoutRouter = require("./v1/workout.routes");
-router.use("/v1/workouts", v1WorkoutRouter);
+const v1TaskRouter = require("./v1/task.routes");
+
+router.use("/v1/tasks", v1TaskRouter);
 
 module.exports = router;

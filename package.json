@@ -15,7 +15,14 @@
     "nodemon": "^2.0.19"
   },
   "dependencies": {
+    "api-query-params": "^5.3.1",
+    "consola": "^2.15.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "mongoose": "^6.4.6",
+    "morgan": "^1.10.0",
     "uuid": "^8.3.2"
   }
 }
