@@ -1,19 +1,10 @@
-const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const utils = require("utility");
-const fs = require("fs");
-const jwt = require("jsonwebtoken");
-
-//const Image = require("../models/image.model");
-const auth = require("../middleware/auth");
-//const useSendgrid = require("../services/sendgrid");
 
 const User = require("../models/user.model");
 const tokenService = require("../services/token.service");
-const config = require("../config");
-
-const { serviceResult } = require("../helpers/serviceResult");
 const ResponseError = require("../helpers/responseError");
+const { serviceResult } = require("../helpers/serviceResult");
 
 const register = async (user) => {
   try {
