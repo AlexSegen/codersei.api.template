@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const utils = require("utility");
+const { v4: uuid } = require("uuid");
 
 const User = require("../models/user.model");
 const auth = require("../middleware/auth");	
@@ -15,6 +16,8 @@ const register = async (user) => {
 
     user.password = bcrypt.hashSync(user.password, 10);
     user.avatar = `https://gravatar.com/avatar/${utils.md5(user.email)}`;
+
+    user.identifier = uuid();
 
     const record = await User.create(user);
 

@@ -3,7 +3,13 @@ const mongoose = require("mongoose");
 const roles = ['root', 'admin', 'user'];
 
 var UserSchema = new mongoose.Schema(
+  
   {
+    identifier: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     first_name: {
       type: String,
       default: "",

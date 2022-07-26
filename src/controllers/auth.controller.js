@@ -8,9 +8,21 @@ const register = async (req, res) => {
 			return res.status(400).json({ message: "Required fields missing." });
 
     const user = req.body;
+
     const { statusCode, data, message } = await authService.register(user);
 
-    return res.status(statusCode).json({ data, message });
+    if (data == null)
+      return res.status(statusCode).json({ message });
+
+    const { _id, first_name, last_name, email, avatar } = data.user;
+		const { token, refreshToken } = data;
+
+    return res.status(statusCode).json({ data: {
+			user: { _id, first_name, last_name, email, avatar },
+			token,
+			refreshToken,
+		}, message });
+
   } catch (error) {
     return res.status(500).json({  message: error.message });
   }
@@ -24,6 +36,9 @@ const login = async (req, res) => {
 
     const user = req.body;
     const { statusCode, data, message } = await authService.login(user);
+
+    if (data == null)
+      return res.status(statusCode).json({ message });
 
 		const { _id, first_name, last_name, email, avatar } = data.user;
 		const { token, refreshToken } = data;
