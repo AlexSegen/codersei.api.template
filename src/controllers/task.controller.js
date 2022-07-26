@@ -25,7 +25,7 @@ const getOne = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { body } = req;
+    const { body, user } = req;
 
     if (!body.title || !body.description)
       return res.status(400).json({ message: "Required fields missing." });
@@ -33,6 +33,7 @@ const create = async (req, res) => {
     const { statusCode, data, message } = await taskService.create({
       title: body.title,
       description: body.description,
+      author: user._id,
     });
 
     return res.status(statusCode).json({ data, message });

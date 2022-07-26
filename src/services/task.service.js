@@ -7,7 +7,9 @@ const {serviceResult} = require("../helpers/serviceResult");
 const getAall = async (query) => {
   const { filter, limit, sort } = aqp(query);
   try {
-    const records = await Model.find(filter).limit(limit).sort(sort);
+    const records = await Model.find(filter)
+    .populate({ path: "author", select: "avatar first_name last_name" })
+    .limit(limit).sort(sort);
 
     return serviceResult(200, records, "All records");
   } catch (error) {
@@ -17,7 +19,7 @@ const getAall = async (query) => {
 
 const getOne = async (id) => {
   try {
-    const record = await Model.findById(id);
+    const record = await Model.findById(id).populate({ path: "author", select: "avatar first_name last_name" });
 
     return serviceResult(200, record, "Record found");
 
@@ -29,17 +31,19 @@ const getOne = async (id) => {
   }
 };
 
-const create = async ({ title, description }) => {
+const create = async ({ title, description, author }) => {
   try {
     const data = new Model({
       title,
       description,
+      author,
       identifier: uuid(),
     });
 
     let record = await data.save();
 
-    record = await Model.findById(record._id);
+    record = await Model.findById(record._id)
+    .populate({ path: "author", select: "avatar first_name last_name" });
 
     return serviceResult(201, record, "Record created");
   } catch (error) {
@@ -55,7 +59,8 @@ const update = async (id, { title, description, completed }) => {
       { new: true }
     );
 
-    updated = await Model.findById(updated._id);
+    updated = await Model.findById(updated._id)
+    .populate({ path: "author", select: "avatar first_name last_name" });
 
     return serviceResult(200, updated, "Record updated");
   } catch (error) {
