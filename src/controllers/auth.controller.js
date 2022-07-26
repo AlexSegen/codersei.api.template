@@ -67,8 +67,38 @@ const profile = async (req, res) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+  try {
+    
+		const user = req.user;
+
+    const payload = {
+      first_name: req.body.first_name ?? "",
+      last_name: req.body.last_name  ?? "",
+      about: req.body.about  ?? "",
+      phone: req.body.phone  ?? "",
+      address: req.body.address  ?? ""
+    };
+
+    const { statusCode, data, message } = await authService.updateProfile(user._id, payload);
+
+    return res.status(statusCode).json({ data, message });
+
+  } catch (error) {
+    if (error instanceof ResponseError)
+      return res.status(error.statusCode).json({
+        name: error.name,
+        code: error.code,
+        message: error.message,
+      });
+
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   register,
   login,
-	profile
+	profile,
+  updateProfile
 };

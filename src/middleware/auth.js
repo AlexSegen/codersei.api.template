@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
-const config = require("../config/");
+const tokenService = require("../services/token.service");
 const ResponseError = require("../helpers/responseError");
 
 function checkStatus(statusID) {
@@ -68,58 +68,44 @@ async function checkRoles(roles, req, res) {
   }
 }
 
-const issueToken = async ({ _id, email, role, permissions }, ) => {
-  const token = await jwt.sign(
-    { _id, email, permissions, role },
-    config.secret,
-    {
-      expiresIn: "1d",
-    }
-  );
-
-  const refreshToken = await jwt.sign({ _id, email }, config.refresh_secret, {
-    expiresIn: "2d",
-  });
-
-  return { token, refreshToken };
-};
-
 const isProtected = (roles) => {
   return async (req, res, next) => {
-
-
     try {
 
       const authorization = req.header("authorization");
+      
       if (!authorization)
         throw new ResponseError({
           message: "Not Authorized: Token not found",
-          name: "AuthenticationError",
+          name: "AuthorizationError",
           code: "TOKEN_NOT_FOUND",
           statusCode: 403
         });
 
-      const authorized = await checkRoles(roles, req, res);
-      if (!authorized)
+      if (!checkRoles(roles, req, res))
         throw new ResponseError({
           message: "You do not have permission to this resource.",
-          name: "AuthenticationError",
+          name: "AuthorizationError",
           code: "ROLE_INSUFFICIENT",
           statusCode: 403
         });
       
       const token = authorization.replace("Bearer ", "");
-      if (!jwt.verify(token, config.secret))
+      if (!tokenService.verifyToken(token))
         throw new ResponseError({
           message: "Not Authorized: Invalid token",
-          name: "AuthenticationError",
+          name: "AuthorizationError",
           code: "TOKEN_INVALID",
           statusCode: 403
         });
+
+        req.user = await getAuthUser(req, res);
+
+        checkStatus(req.user.status);
       
       return next();
     } catch (error) {
-      
+
       if(error instanceof ResponseError) {
         return res.status(error.statusCode).json({
           name: error.name,
@@ -155,7 +141,7 @@ const getAuthUser = async (req, res) => {
       });
 
     const token = authorization.replace("Bearer ", "");
-    const decoded = jwt.verify(token, config.secret);
+    const decoded = tokenService.verifyToken(token);
 
     const user = await User.findById(decoded._id);
     if (!user) {
@@ -186,14 +172,14 @@ const getRefreshTokenUser = async (req, res) => {
 
     const token = refresh_token.replace("Bearer ", "");
 
-    const decoded = jwt.verify(token, config.refresh_secret);
+    const decoded = tokenService.verifyRefreshToken(token);
 
     const user = await User.findById(decoded._id);
     if (!user)
-    return res.status(401).json({
-        name: "AuthenticationError",
-        message: "Not Authorized.",
-      });
+      return res.status(401).json({
+          name: "AuthenticationError",
+          message: "Not Authorized.",
+        });
 
     return user;
   } catch (error) {
@@ -204,34 +190,24 @@ const getRefreshTokenUser = async (req, res) => {
   }
 };
 
-const recoveryToken = async ({ email }) => {
-  const token = await jwt.sign(
-    { email },
-    config.secret,
-    {
-      expiresIn: "1h",
-    }
-  );
-
-  return token;
-};
+const recoveryToken = async ({ email }) => tokenService.issueRecoveryToken(email);
 
 const decodeToken = (req, res) => {
   try {
     const authorization = req.header("authorization");
 
-    if (!authorization)
-    return res.status(401).json({
-        name: "AuthenticationError",
-        message: "Not Authorized: Token not found",
-      });
-
-    const token = authorization.replace("Bearer ", "");
-    const decoded = jwt.verify(token, config.secret);
-
-    return decoded;
+    return tokenService.decodeToken(authorization);
     
   } catch (error) {
+
+    if(error instanceof ResponseError) {
+      return res.status(error.statusCode).json({
+        name: error.name,
+        code: error.code,
+        message: error.message
+      });
+    }
+
     return res.status(401).json({
       name: "AuthenticationError",
       message: error.message,
@@ -243,7 +219,6 @@ module.exports = {
   checkPermission,
   checkRoles,
   checkStatus,
-  issueToken,
   recoveryToken,
   isProtected,
   getAuthUser,

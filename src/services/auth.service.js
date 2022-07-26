@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const utils = require("utility");
 
 const User = require("../models/user.model");
+const auth = require("../middleware/auth");	
 const tokenService = require("../services/token.service");
 const ResponseError = require("../helpers/responseError");
 const { serviceResult } = require("../helpers/serviceResult");
@@ -41,15 +42,13 @@ const login = async (user) => {
     if (!exists)
       return serviceResult(404,null,"User not found");
     
-    // auth.checkStatus(user.status);
+    auth.checkStatus(exists.status);
     
     const isMatch = await bcrypt.compare(password, exists.password);
     if (!isMatch)
       return serviceResult(401,null,"Invalid user or password");
 
     const tokens = tokenService.issueToken(exists);
-
-    console.log(tokens);	
 
     return serviceResult(200,{
       user: exists,
@@ -84,11 +83,25 @@ const getProfile = async (authorizationHeader) => {
         statusCode: 401,
       });
 
+    return serviceResult(200,user, "Full user profile");
 
-    // auth.checkStatus(user.status);
+  } catch (error) {
+    throw error;
+  }
+}
 
-    return serviceResult(200,user, "Full user profile");;
+const updateProfile = async (id, payload) => {
+  try {
 
+    const record = await User.findByIdAndUpdate(id, payload, {
+      new: true
+    });
+
+    if (!record)
+      return serviceResult(404, null, "User not found");
+
+    return serviceResult(200, record, "Profile updated");
+    
   } catch (error) {
     throw error;
   }
@@ -97,5 +110,6 @@ const getProfile = async (authorizationHeader) => {
 module.exports = {
   register,
   login,
-  getProfile
+  getProfile,
+  updateProfile
 };
