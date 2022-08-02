@@ -63,7 +63,7 @@ const decodeToken = authorizationHeader => {
 
 const issueRecoveryToken = email => {
   const token = jwt.sign(
-    { email },
+    { email, recovery: true },
     config.secret,
     {
       expiresIn: "1h",
@@ -73,4 +73,33 @@ const issueRecoveryToken = email => {
   return token;
 };
 
-module.exports = { verifyToken, verifyRefreshToken, issueToken, issueRecoveryToken, decodeToken };
+const verifyRecoveryToken = token => {
+  try {
+
+    const decoded = verifyToken(token);
+
+    if (!decoded.recovery)
+      throw new ResponseError({
+        message: "auth.token_not_valid",
+        name: "AuthorizationError",
+        code: "TOKEN_INVALID",
+        statusCode: 403
+      });
+
+    return decoded;
+    
+  } catch (error) {
+
+    if (error.name == "JsonWebTokenError")
+      throw new ResponseError({
+        message: "auth.token_not_valid",
+        name: "AuthorizationError",
+        code: "TOKEN_INVALID",
+        statusCode: 403
+      });
+    
+      throw error;
+  }
+}
+
+module.exports = { verifyToken, verifyRefreshToken, issueToken, issueRecoveryToken, verifyRecoveryToken, decodeToken };

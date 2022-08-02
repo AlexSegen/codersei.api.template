@@ -27,10 +27,12 @@
             "fail": "Error recovering password. Please, try again later.",
             "paragraph1": "Hi, it appears that you lost your password. Sorry about that! But don't worry, you can use the following link to reset your password",
             "paragraph2": "If you don't use this link within 1 hour, it will expire. If you didn't request this, you can ignore it.",
-            "cta": "Reset password"
+            "cta": "Reset password",
+            "password_changed": "Your password has been changed"
         },
         "token_expired": "Your token has expired",
         "token_not_valid": "Your token is not valid",
+        "recovery_token_valid": "Recovery token is valid",
         "user_blocked": "Your user has been blocked",
         "user_disabled": "Your user has been disabled",
         "user_not_found": "User not found",

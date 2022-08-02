@@ -27,10 +27,12 @@
             "fail": "Ocurrió un problema al enviar el correo. Por favor más tarde",
             "paragraph1": "Hola, parece que olvidaste tu contraseña. Pero no te preocupes, puedes usar el siguiente link para establecer una nueva.",
             "paragraph2": "Si no usas el enlace dentro de una hora, expirará. Si no solicitaste restablecer la contraseña, puedes ignorar este email.",
-            "cta": "Crear nueva contraseña"
+            "cta": "Crear nueva contraseña",
+            "password_changed": "Contraseña cambiada exitosamente"
         },
         "token_expired": "El token actual ha expirado y ya no es válido",
         "token_not_valid": "El token es inválido",
+        "recovery_token_valid": "El token de recuperación es válido",
         "user_blocked": "La cuenta ha sido bloqueada",
         "user_disabled": "Usuario desactivado",
         "user_not_found": "Usuario no encontrado",

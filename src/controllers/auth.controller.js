@@ -145,10 +145,57 @@ const requestPasswordReset = async (req, res) => {
   }
 }
 
+const checkRecoveryToken = async (req, res) => {
+  try {
+
+    if (!req.params.token)
+      return res.status(400).json({ message: req.t("auth.token_not_found") });
+
+    const { statusCode, data, message } = await authService.checkRecoveryToken(req.params.token);
+
+    return res.status(statusCode).json({ data, message: req.t(message) });
+    
+  } catch (error) {
+    if (error instanceof ResponseError)
+      return res.status(error.statusCode).json({
+        name: error.name,
+        code: error.code,
+        message: req.t(error.message),
+      });
+    return res.status(500).json({ message: error.message });
+  }
+}
+
+const resetPassword = async (req, res) => {
+  try {
+
+    if (!req.body.password)
+      return res.status(400).json({ message: req.t("auth.password_required") });
+
+    if (!req.params.token)
+      return res.status(400).json({ message: req.t("auth.token_not_found") });
+
+    const { statusCode, data, message } = await authService.resetPassword(req.body.password, req.params.token);
+
+    return res.status(statusCode).json({ data, message: req.t(message) });
+    
+  } catch (error) {
+    if (error instanceof ResponseError)
+      return res.status(error.statusCode).json({
+        name: error.name,
+        code: error.code,
+        message: req.t(error.message),
+      });
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   register,
   login,
 	profile,
   updateProfile,
-  requestPasswordReset
+  requestPasswordReset,
+  checkRecoveryToken,
+  resetPassword
 };

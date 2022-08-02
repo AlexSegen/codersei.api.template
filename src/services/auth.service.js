@@ -128,10 +128,49 @@ const requestPasswordReset = async (email, translations) => {
   }
 }
 
+const checkRecoveryToken = async (token) => {
+  try {
+
+    const isValid = tokenService.verifyRecoveryToken(token);
+
+    return serviceResult(200, { success: isValid }, "auth.recovery_token_valid");
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+const resetPassword = async (password, token) => {
+  try {
+
+    const decoded = tokenService.verifyRecoveryToken(token);
+
+    const user = await User.findOne({ email: decoded.email });
+
+    if (!user)
+      return serviceResult(404, null, "auth.user_not_found");
+
+    user.password = bcrypt.hashSync(password, 10);
+
+    await User.findOneAndUpdate(
+      { email: decoded.email },
+      { password: user.password },
+      { new: true }
+    );
+
+    return serviceResult(200, { email: user.email }, "auth.password_reset.password_changed");
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   register,
   login,
   getProfile,
   updateProfile,
-  requestPasswordReset
+  requestPasswordReset,
+  checkRecoveryToken,
+  resetPassword
 };
