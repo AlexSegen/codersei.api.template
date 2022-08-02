@@ -35,9 +35,9 @@ function checkPermission(permission) {
     if (permissions.includes(permission)) return next();
 
     return res.status(403).json({
-      message: "auth.insufficient_scope",
+      message: req.t("auth.insufficient_scope"),
       name: "AuthenticationError",
-      code: "PERMISSION_INSUFFICIENT"
+      code: "SCOPE_INSUFFICIENT"
     });
   };
 }
@@ -51,12 +51,14 @@ async function checkRoles(roles, req, res) {
   if (typeof roles === "string") {
     roles = [roles];
   }
-  
+
   try {
     const user = await getAuthUser(req, res);
 
-    const userRole = user.role || "user";
+    req.user = await user;
 
+    const userRole = user.role || "user";
+    
     const authorizedRole = roles.some((role) => role === userRole);
 
     return authorizedRole;
@@ -80,7 +82,10 @@ const isProtected = (roles) => {
           statusCode: 403
         });
 
-      if (!checkRoles(roles, req, res))
+      
+      const hasRole = await checkRoles(roles, req, res);
+
+      if (!hasRole)
         throw new ResponseError({
           message: "auth.insufficient_role",
           name: "AuthorizationError",
@@ -97,9 +102,9 @@ const isProtected = (roles) => {
           statusCode: 403
         });
 
-        req.user = await getAuthUser(req, res);
+      req.user = await getAuthUser(req, res);
 
-        checkStatus(req.user.status);
+      checkStatus(req.user.status);
       
       return next();
       

@@ -45,7 +45,7 @@
         "user_not_found": "User not found",
         "unknown_status": "Unknown user status",
         "insufficient_scope": "You do not have permission to this resource",
-        "ïnsufficient_role": "You do not have permission to this resource",
+        "insufficient_role": "You do not have permission to this resource",
         "token_not_found":"Not Authorized: Token not found",
         "forbidden": "Not Authorized"
     },

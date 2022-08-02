@@ -45,7 +45,7 @@
         "user_not_found": "Usuario no encontrado",
         "unknown_status": "Estado de usuario desconocido",
         "insufficient_scope": "No tienes suficientes permisos para realizar esta acción",
-        "ïnsufficient_role": "No tienes suficientes permisos para realizar esta acción",
+        "insufficient_role": "No tienes suficientes permisos para realizar esta acción",
         "token_not_found":"No autorizado. Token no encontrado.",
         "forbidden": "No autorizado"
     },
