@@ -30,6 +30,13 @@
             "cta": "Crear nueva contraseña",
             "password_changed": "Contraseña cambiada exitosamente"
         },
+        "password_reset_notification": {
+            "subject": "Contraseña actualizada",
+            "paragraph1": "La contrasena de tu cuenta ha sido actualizada, tal como solicitaste. Si tienes problemas recuerda que puedes escribir a soporte.",
+            "paragraph2": "Recibiste este email porque alguien solicitó cambiar tu contraseña",
+            "cta": "Iniciar sesión",
+            "link": "Nueva contrasena"
+        },
         "token_expired": "El token actual ha expirado y ya no es válido",
         "token_not_valid": "El token es inválido",
         "recovery_token_valid": "El token de recuperación es válido",

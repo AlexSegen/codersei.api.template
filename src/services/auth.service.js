@@ -140,7 +140,7 @@ const checkRecoveryToken = async (token) => {
   }
 }
 
-const resetPassword = async (password, token) => {
+const resetPassword = async ({password, token}, translations) => {
   try {
 
     const decoded = tokenService.verifyRecoveryToken(token);
@@ -157,6 +157,8 @@ const resetPassword = async (password, token) => {
       { password: user.password },
       { new: true }
     );
+
+    await notificationService.sendPasswordUpdatedEmail(user, translations);
 
     return serviceResult(200, { email: user.email }, "auth.password_reset.password_changed");
 

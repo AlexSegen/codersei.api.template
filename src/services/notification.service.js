@@ -20,7 +20,7 @@ const sendRequestPasswordResetEmail = async ({ first_name, email }, token, t) =>
     const msg = {
       from: config.smtp.username,
       to: email,
-      subject: `🔑 ${config.app}: ${t.subject} .`,
+      subject: `🔑 ${config.app}: ${t.subject}.`,
       html,
     };
 
@@ -42,6 +42,45 @@ const sendRequestPasswordResetEmail = async ({ first_name, email }, token, t) =>
   }
 };
 
+const sendPasswordUpdatedEmail = async ({ first_name, email }, t) => {
+  try {
+    let html = fs
+      .readFileSync("./templates/password-updated.txt")
+      .toString()
+      .replace("{{subject}}", t.subject)
+      .replace("{{paragraph1}}", t.paragraph1)
+      .replace("{{paragraph2}}", t.paragraph2)
+      .replace("{{cta}}", t.cta)
+      .replace("{{first_name}}", first_name)
+      .replace("{{link}}", t.link)
+      .replace(/{{front_url}}/gi, config.front_url);
+
+    const msg = {
+      from: config.smtp.username,
+      to: email,
+      subject: `🔑 ${config.app}: ${t.subject}.`,
+      html,
+    };
+
+    await useSendgrid(msg);
+
+    return serviceResult(
+      200,
+      {
+        success: true
+      },
+      ""
+    );
+  } catch (error) {
+    return serviceResult(
+        500,
+        null,
+        error.message
+      );
+  }
+};
+
 module.exports = {
     sendRequestPasswordResetEmail,
+    sendPasswordUpdatedEmail,
 }

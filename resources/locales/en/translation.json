@@ -30,6 +30,13 @@
             "cta": "Reset password",
             "password_changed": "Your password has been changed"
         },
+        "password_reset_notification": {
+            "subject": "Password updated",
+            "paragraph1": "Your account's password has been updated as requested. If you have problems, please contact support.",
+            "paragraph2": "You have received this email because someone has requested to reset your password",
+            "cta": "Login",
+            "link": "Set new password"
+        },
         "token_expired": "Your token has expired",
         "token_not_valid": "Your token is not valid",
         "recovery_token_valid": "Recovery token is valid",

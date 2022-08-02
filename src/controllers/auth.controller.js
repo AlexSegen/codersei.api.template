@@ -169,13 +169,24 @@ const checkRecoveryToken = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
 
-    if (!req.body.password)
+    const token = req.params.token;
+    const password = req.body.password;
+
+    if (!password)
       return res.status(400).json({ message: req.t("auth.password_required") });
 
-    if (!req.params.token)
+    if (!token)
       return res.status(400).json({ message: req.t("auth.token_not_found") });
 
-    const { statusCode, data, message } = await authService.resetPassword(req.body.password, req.params.token);
+      const translations = {
+        subject: req.t("auth.password_reset_notification.subject"),
+        paragraph1: req.t("auth.password_reset_notification.paragraph1"),
+        paragraph2: req.t("auth.password_reset_notification.paragraph2"),
+        cta: req.t("auth.password_reset_notification.cta"),
+        link: req.t("auth.password_reset_notification.link"),
+      }
+
+    const { statusCode, data, message } = await authService.resetPassword({ password, token }, translations);
 
     return res.status(statusCode).json({ data, message: req.t(message) });
     

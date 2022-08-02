@@ -33,6 +33,15 @@ const verifyToken = token => {
         statusCode: 403
       });
 
+    if (error instanceof jwt.TokenExpiredError)
+      throw new ResponseError({
+        message: "auth.token_expired",
+        name: "AuthenticationError",
+        code: "TOKEN_EXPIRED",
+        statusCode: 401
+      });
+      
+
       throw error;
   }
 }
@@ -96,6 +105,14 @@ const verifyRecoveryToken = token => {
         name: "AuthorizationError",
         code: "TOKEN_INVALID",
         statusCode: 403
+      });
+
+    if (error instanceof jwt.TokenExpiredError)
+      throw new ResponseError({
+        message: "auth.token_expired",
+        name: "AuthenticationError",
+        code: "TOKEN_EXPIRED",
+        statusCode: 401
       });
     
       throw error;
