@@ -12,7 +12,7 @@ const register = async (user) => {
   try {
     const exists = await User.findOne({ email: user.email });
 
-    if (exists) return serviceResult(400, null, "User already exists");
+    if (exists) return serviceResult(400, null, "auth.register.conflict");
 
     user.password = bcrypt.hashSync(user.password, 10);
     user.avatar = `https://gravatar.com/avatar/${utils.md5(user.email)}`;
@@ -29,7 +29,7 @@ const register = async (user) => {
         user: record,
         ...tokens,
       },
-      "User created"
+      "auth.register.success"
     );
   } catch (error) {
     throw error;
@@ -43,20 +43,20 @@ const login = async (user) => {
     let exists = await User.findOne({ email })
     
     if (!exists)
-      return serviceResult(404,null,"User not found");
+      return serviceResult(404,null,"auth.login.not_found");
     
     auth.checkStatus(exists.status);
     
     const isMatch = await bcrypt.compare(password, exists.password);
     if (!isMatch)
-      return serviceResult(401,null,"Invalid user or password");
+      return serviceResult(401,null,"auth.login.fail");
 
     const tokens = tokenService.issueToken(exists);
 
     return serviceResult(200,{
       user: exists,
       ...tokens,
-    },"Login successful");
+    },"auth.login.success");
 
   } catch (error) {
     throw error;
@@ -69,7 +69,7 @@ const getProfile = async (authorizationHeader) => {
     if (!authorizationHeader)
       throw new ResponseError({
         name: "AuthenticationError",
-        message: "Not Authorized: Token not found",
+        message: "auth.profile.token_not_found",
         statusCode: 401,
       });
 
@@ -82,11 +82,11 @@ const getProfile = async (authorizationHeader) => {
     if (!user)
       throw new ResponseError({
         name: "AuthenticationError",
-        message: "Not Authorized",
+        message: "auth.profile.forbidden",
         statusCode: 401,
       });
 
-    return serviceResult(200,user, "Full user profile");
+    return serviceResult(200,user, "auth.profile.user_profile");
 
   } catch (error) {
     throw error;
@@ -101,9 +101,9 @@ const updateProfile = async (id, payload) => {
     });
 
     if (!record)
-      return serviceResult(404, null, "User not found");
+      return serviceResult(404, null, "auth.profile.user_not_found");
 
-    return serviceResult(200, record, "Profile updated");
+    return serviceResult(200, record, "auth.profile.profile_updated");
     
   } catch (error) {
     throw error;

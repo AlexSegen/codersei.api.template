@@ -12,7 +12,7 @@ const register = async (req, res) => {
     const { statusCode, data, message } = await authService.register(user);
 
     if (data == null)
-      return res.status(statusCode).json({ message });
+      return res.status(statusCode).json({ message: req.t(message) });
 
     const { _id, first_name, last_name, email, avatar } = data.user;
 		const { token, refreshToken } = data;
@@ -21,7 +21,7 @@ const register = async (req, res) => {
 			user: { _id, first_name, last_name, email, avatar },
 			token,
 			refreshToken,
-		}, message });
+		}, message: req.t(message) });
 
   } catch (error) {
     return res.status(500).json({  message: error.message });
@@ -38,7 +38,7 @@ const login = async (req, res) => {
     const { statusCode, data, message } = await authService.login(user);
 
     if (data == null)
-      return res.status(statusCode).json({ message });
+      return res.status(statusCode).json({ message: req.t(message) });
 
 		const { _id, first_name, last_name, email, avatar } = data.user;
 		const { token, refreshToken } = data;
@@ -47,14 +47,14 @@ const login = async (req, res) => {
 			user: { _id, first_name, last_name, email, avatar },
 			token,
 			refreshToken,
-		}, message: req.t("auth.login.success") });
+		}, message: req.t(message) });
 
   } catch (error) {
     if (error instanceof ResponseError)
       return res.status(error.statusCode).json({
         name: error.name,
         code: error.code,
-        message: error.message,
+        message: req.t(error.message)
       });
 
     return res.status(500).json({ message: error.message });
@@ -68,14 +68,14 @@ const profile = async (req, res) => {
     
 		const { statusCode, data, message } = await authService.getProfile(authorization);
 
-    return res.status(statusCode).json({ data, message });
+    return res.status(statusCode).json({ data, message: req.t(message) });
 
   } catch (error) {
     if (error instanceof ResponseError)
       return res.status(error.statusCode).json({
         name: error.name,
         code: error.code,
-        message: error.message,
+        message: req.t(error.message)
       });
 
     return res.status(500).json({ message: error.message });
@@ -97,14 +97,14 @@ const updateProfile = async (req, res) => {
 
     const { statusCode, data, message } = await authService.updateProfile(user._id, payload);
 
-    return res.status(statusCode).json({ data, message });
+    return res.status(statusCode).json({ data, message: req.t(message) });
 
   } catch (error) {
     if (error instanceof ResponseError)
       return res.status(error.statusCode).json({
         name: error.name,
         code: error.code,
-        message: error.message,
+        message: req.t(error.message),
       });
 
     return res.status(500).json({ message: error.message });

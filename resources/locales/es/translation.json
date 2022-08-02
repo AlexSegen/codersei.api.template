@@ -4,7 +4,28 @@
             "success": "Inicio de sesión exitoso",
             "fail": "Contraseña o email incorrecto",
             "not_found": "Usuario no encontrado"
-        }
+        },
+        "register": {
+            "conflict": "El email ya existe",
+            "success": "Usuario creado exitosamente"
+        },
+        "profile": {
+            "token_not_found":"No autorizado. Token no encontrado.",
+            "unauthorized": "No autorizado",
+            "user_profile": "Detalles del perfil",
+            "user_not_found": "Usuario no encontrado",
+            "profile_updated": "Perfil actualizado"
+        },
+        "token_expired": "El token actual ha expirado y ya no es válido",
+        "token_not_valid": "El token es inválido",
+        "user_blocked": "La cuenta ha sido bloqueada",
+        "user_disabled": "Usuario desactivado",
+        "unknown_status": "Estado de usuario desconocido",
+        "insufficient_scope": "No tienes suficientes permisos para realizar esta acción",
+        "ïnsufficient_role": "No tienes suficientes permisos para realizar esta acción",
+        "token_not_found":"No autorizado. Token no encontrado.",
+        "forbidden": "No autorizado"
     },
+    "required_fields_missing": "Campos requeridos faltantes",
     "greeting": "¡hola!"
 }

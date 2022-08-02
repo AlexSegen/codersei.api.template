@@ -27,7 +27,7 @@ const verifyToken = token => {
   } catch (error) {
     if (error.name == "JsonWebTokenError")
       throw new ResponseError({
-        message: "Not Authorized: Invalid token",
+        message: "auth.token_not_valid",
         name: "AuthorizationError",
         code: "TOKEN_INVALID",
         statusCode: 403

@@ -4,7 +4,28 @@
             "success": "Login successful",
             "fail": "Incorrect email or password",
             "not_found": "User not found"
-        }
+        },
+        "register": {
+            "conflict": "User already exists",
+            "success": "Successfully registered"
+        },
+        "profile": {
+            "token_not_found":"Not authorized. Token not found.",
+            "forbidden": "Not authorized",
+            "user_profile": "User profile details",
+            "user_not_found": "User not found",
+            "profile_updated": "Profile updated"
+        },
+        "token_expired": "Your token has expired",
+        "token_not_valid": "Your token is not valid",
+        "user_blocked": "Your user has been blocked",
+        "user_disabled": "Your user has been disabled",
+        "unknown_status": "Unknown user status",
+        "insufficient_scope": "You do not have permission to this resource",
+        "ïnsufficient_role": "You do not have permission to this resource",
+        "token_not_found":"Not Authorized: Token not found",
+        "forbidden": "Not Authorized"
     },
+    "required_fields_missing": "Required fields missing",
     "greeting": "Hello!"
 }

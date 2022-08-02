@@ -62,6 +62,9 @@ const remove = async (req, res) => {
   try {
     const { statusCode, data, message } = await taskService.remove(req.params.id);
 
+    if(data == null)
+      return res.status(statusCode).json({ message });
+
     return res.status(statusCode).json({ data, message });
   } catch (error) {
     return res.status(500).json({ message: error.message });

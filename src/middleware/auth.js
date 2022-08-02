@@ -11,19 +11,19 @@ function checkStatus(statusID) {
       throw new ResponseError({
         name: "AuthenticationError",
         code: "USER_BLOCKED",
-        message: "Your user has been blocked."
+        message: "auth.user_blocked"
       })
     case 3:
       throw new ResponseError({
         name: "AuthenticationError",
         code: "USER_DISABLED",
-        message: "Your user has been disabled."
+        message: "auth.user_disabled"
       });
     default:
       throw new ResponseError({
         name: "AuthenticationError",
         code: "USER_DISABLED",
-        message: "Unknown user status."
+        message: "auth.unknown_status"
       });
   }
 }
@@ -35,7 +35,7 @@ function checkPermission(permission) {
     if (permissions.includes(permission)) return next();
 
     return res.status(403).json({
-      message: "You do not have permission to this resource.",
+      message: "auth.insufficient_scope",
       name: "AuthenticationError",
       code: "PERMISSION_INSUFFICIENT"
     });
@@ -54,8 +54,6 @@ async function checkRoles(roles, req, res) {
   
   try {
     const user = await getAuthUser(req, res);
-
-    checkStatus(user.status);
 
     const userRole = user.role || "user";
 
@@ -76,7 +74,7 @@ const isProtected = (roles) => {
       
       if (!authorization)
         throw new ResponseError({
-          message: "Not Authorized: Token not found",
+          message: "auth.token_not_found",
           name: "AuthorizationError",
           code: "TOKEN_NOT_FOUND",
           statusCode: 403
@@ -84,7 +82,7 @@ const isProtected = (roles) => {
 
       if (!checkRoles(roles, req, res))
         throw new ResponseError({
-          message: "You do not have permission to this resource.",
+          message: "auth.insufficient_role",
           name: "AuthorizationError",
           code: "ROLE_INSUFFICIENT",
           statusCode: 403
@@ -93,7 +91,7 @@ const isProtected = (roles) => {
       const token = authorization.replace("Bearer ", "");
       if (!tokenService.verifyToken(token))
         throw new ResponseError({
-          message: "Not Authorized: Invalid token",
+          message: "auth.token_not_valid",
           name: "AuthorizationError",
           code: "TOKEN_INVALID",
           statusCode: 403
@@ -104,19 +102,20 @@ const isProtected = (roles) => {
         checkStatus(req.user.status);
       
       return next();
+      
     } catch (error) {
 
       if(error instanceof ResponseError) {
         return res.status(error.statusCode).json({
           name: error.name,
           code: error.code,
-          message: error.message
+          message: req.t(error.message)
         });
       }
 
       if (error instanceof jwt.TokenExpiredError) {
         return res.status(401).json({
-          message: "Your token has expired",
+          message: req.t("auth.token_expired"),
           name: "AuthenticationError",
           code: "TOKEN_EXPIRED",
           statusCode: 401
@@ -137,7 +136,7 @@ const getAuthUser = async (req, res) => {
     if (!authorization)
       return res.status(401).json({
         name: "AuthenticationError",
-        message: "Not Authorized: Token not found",
+        message: "auth.token_not_found",
       });
 
     const token = authorization.replace("Bearer ", "");
@@ -147,7 +146,7 @@ const getAuthUser = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         name: "AuthenticationError",
-        message: "Not Authorized",
+        message: "auth.forbidden",
       });
     }
 
@@ -155,7 +154,7 @@ const getAuthUser = async (req, res) => {
   } catch (error) {
     return res.status(401).json({
       name: "AuthenticationError",
-      message: error.message,
+      message: req.t(error.message)
     });
   }
 };
