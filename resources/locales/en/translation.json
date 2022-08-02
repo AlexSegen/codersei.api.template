@@ -19,7 +19,9 @@
             "user_not_found": "User not found",
             "profile_updated": "Profile updated",
             "first_name_required": "First name is required",
-            "last_name_required": "Last name is required"
+            "last_name_required": "Last name is required",
+            "avatar_updated": "Avatar updated",
+            "avatar_required": "Avatar is required"
         },
         "password_reset": {
             "subject": "Password recovery",

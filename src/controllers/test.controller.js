@@ -3,6 +3,7 @@ const getTest = async (req, res) => {
     return res.status(200).json({
       data: {
         name: "test",
+        user: req.user
       },
       message: "test",
     });

@@ -70,11 +70,7 @@ const login = async (req, res) => {
 const profile = async (req, res) => {
   try {
     
-		const authorization = req.header("authorization");
-    
-		const { statusCode, data, message } = await authService.getProfile(authorization);
-
-    return res.status(statusCode).json({ data, message: req.t(message) });
+    return res.status(200).json({ data: req.user, message: req.t("auth.profile.user_profile") });
 
   } catch (error) {
     if (error instanceof ResponseError)
@@ -201,6 +197,29 @@ const resetPassword = async (req, res) => {
   }
 }
 
+const updateAvatar = async (req, res) => {
+  try {
+
+    const user = req.user;
+
+    if (!req.file)
+      return res.status(400).json({ message: req.t("auth.profile.avatar_required") });
+
+    const { statusCode, data, message } = await authService.updateAvatar(user._id, req.file.url);
+
+    return res.status(statusCode).json({ data, message: req.t(message) });
+
+  } catch (error) {
+    if (error instanceof ResponseError)
+      return res.status(error.statusCode).json({
+        name: error.name,
+        code: error.code,
+        message: req.t(error.message),
+      });
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -208,5 +227,6 @@ module.exports = {
   updateProfile,
   requestPasswordReset,
   checkRecoveryToken,
-  resetPassword
+  resetPassword,
+  updateAvatar
 };

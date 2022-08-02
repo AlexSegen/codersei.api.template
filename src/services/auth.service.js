@@ -167,6 +167,25 @@ const resetPassword = async ({password, token}, translations) => {
   }
 }
 
+const updateAvatar = async (user, avatarUrl) => {
+  try {
+
+    const record = await User.findByIdAndUpdate(user._id, {
+      avatar: avatarUrl
+    }, {
+      new: true
+    });
+
+    if (!record)
+      return serviceResult(404, null, "auth.profile.user_not_found");
+
+    return serviceResult(200, record, "auth.profile.avatar_updated");
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -174,5 +193,6 @@ module.exports = {
   updateProfile,
   requestPasswordReset,
   checkRecoveryToken,
-  resetPassword
+  resetPassword,
+  updateAvatar
 };
