@@ -9,6 +9,8 @@ const i18next = require('i18next');
 const Backend = require('i18next-node-fs-backend');
 const i18nextMiddleware = require('i18next-http-middleware');
 
+const lng = require('./middleware/localization');
+
 
 i18next.use(Backend).use(i18nextMiddleware.LanguageDetector)
   .init(
@@ -44,6 +46,8 @@ db;
 const app = express();
 
 app.use(i18nextMiddleware.handle(i18next));
+
+app.use(lng.localizationMiddleware());
 
 app.get('/greeting', (req, res) => {
   const response = req.t('greeting');

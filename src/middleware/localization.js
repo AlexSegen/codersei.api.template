@@ -2,7 +2,7 @@ const applicableLangs = ["en", "es"];
 
 function localizationMiddleware() {
   return async (req, res, next) => {
-    const lng = req.headers.language;
+    const lng = req.headers['x-language'];
 
     if (!lng) return next();
 
