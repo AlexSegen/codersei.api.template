@@ -7,6 +7,7 @@ router
   .post("/register", Controller.register)
   .post("/login", Controller.login)
   .get("/profile", auth.isProtected(), Controller.profile)
-  .patch("/profile", auth.isProtected(), Controller.updateProfile);
+  .patch("/profile", auth.isProtected(), Controller.updateProfile)
+  .post("/request-password-reset", Controller.requestPasswordReset);
 
 module.exports = router;

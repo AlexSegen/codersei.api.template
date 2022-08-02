@@ -21,10 +21,19 @@
             "first_name_required": "El nombre es requerido",
             "last_name_required": "El apellido es requerido"
         },
+        "password_reset": {
+            "subject": "Restablecer contraseña",
+            "success": "Se ha enviado un correo para restablecer la contraseña",
+            "fail": "Ocurrió un problema al enviar el correo. Por favor más tarde",
+            "paragraph1": "Hola, parece que olvidaste tu contraseña. Pero no te preocupes, puedes usar el siguiente link para establecer una nueva.",
+            "paragraph2": "Si no usas el enlace dentro de una hora, expirará. Si no solicitaste restablecer la contraseña, puedes ignorar este email.",
+            "cta": "Crear nueva contraseña"
+        },
         "token_expired": "El token actual ha expirado y ya no es válido",
         "token_not_valid": "El token es inválido",
         "user_blocked": "La cuenta ha sido bloqueada",
         "user_disabled": "Usuario desactivado",
+        "user_not_found": "Usuario no encontrado",
         "unknown_status": "Estado de usuario desconocido",
         "insufficient_scope": "No tienes suficientes permisos para realizar esta acción",
         "ïnsufficient_role": "No tienes suficientes permisos para realizar esta acción",

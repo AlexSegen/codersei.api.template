@@ -61,7 +61,7 @@ const decodeToken = authorizationHeader => {
   }
 }
 
-const issueRecoveryToken = (email) => {
+const issueRecoveryToken = email => {
   const token = jwt.sign(
     { email },
     config.secret,

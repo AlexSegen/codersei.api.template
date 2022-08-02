@@ -123,9 +123,32 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const requestPasswordReset = async (req, res) => {
+  try {
+
+    if (!req.body.email)
+      return res.status(400).json({ message: req.t("auth.email_required") });
+
+      const translations = {
+        subject: req.t("auth.password_reset.subject"),
+        paragraph1: req.t("auth.password_reset.paragraph1"),
+        paragraph2: req.t("auth.password_reset.paragraph2"),
+        cta: req.t("auth.password_reset.cta"),
+      }
+
+    const { statusCode, data, message } = await authService.requestPasswordReset(req.body.email, translations);
+
+    return res.status(statusCode).json({ data, message: req.t(message) });
+    
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   register,
   login,
 	profile,
-  updateProfile
+  updateProfile,
+  requestPasswordReset
 };

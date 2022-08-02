@@ -5,6 +5,7 @@ const { v4: uuid } = require("uuid");
 const User = require("../models/user.model");
 const auth = require("../middleware/auth");	
 const tokenService = require("../services/token.service");
+const notificationService = require("../services/notification.service");
 const ResponseError = require("../helpers/responseError");
 const { serviceResult } = require("../helpers/serviceResult");
 
@@ -110,9 +111,27 @@ const updateProfile = async (id, payload) => {
   }
 }
 
+const requestPasswordReset = async (email, translations) => {
+  try {
+
+    const user = await User.findOne({ email });
+
+    if (!user)
+      return serviceResult(404, null, "auth.user_not_found");
+
+    const token = tokenService.issueRecoveryToken(email);
+
+    return await notificationService.sendRequestPasswordResetEmail(user, token, translations);
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   register,
   login,
   getProfile,
-  updateProfile
+  updateProfile,
+  requestPasswordReset
 };
