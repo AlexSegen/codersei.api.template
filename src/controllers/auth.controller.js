@@ -4,8 +4,11 @@ const authService = require("../services/auth.service");
 const register = async (req, res) => {
   try {
 
-		if (!req.body.email || !req.body.password)
-			return res.status(400).json({ message: "Required fields missing." });
+		if (!req.body.email)
+			return res.status(400).json({ message: req.t("auth.email_required") });
+
+    if (!req.body.password)
+			return res.status(400).json({ message: req.t("auth.password_required") });
 
     const user = req.body;
 
@@ -31,8 +34,11 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
 
-		if (!req.body.email || !req.body.password)
-			return res.status(400).json({ message: "Required fields missing." });
+		if (!req.body.email)
+			return res.status(400).json({ message: req.t("auth.email_required") });
+
+    if (!req.body.password)
+			return res.status(400).json({ message: req.t("auth.password_required") });
 
     const user = req.body;
     const { statusCode, data, message } = await authService.login(user);
@@ -87,9 +93,15 @@ const updateProfile = async (req, res) => {
     
 		const user = req.user;
 
+    if (!req.body.first_name)
+      return res.status(400).json({ message: req.t("auth.profile.first_name_required") });
+
+    if (!req.body.last_name)
+      return res.status(400).json({ message: req.t("auth.profile.last_name_required") });
+
     const payload = {
-      first_name: req.body.first_name ?? "",
-      last_name: req.body.last_name  ?? "",
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
       about: req.body.about  ?? "",
       phone: req.body.phone  ?? "",
       address: req.body.address  ?? ""

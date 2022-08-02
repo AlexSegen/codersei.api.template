@@ -1,5 +1,8 @@
 {
     "auth": {
+        "email_required": "Email is required",
+        "email_invalid": "Email is invalid",
+        "password_required": "Password is required",
         "login": {
             "success": "Login successful",
             "fail": "Incorrect email or password",
@@ -14,7 +17,9 @@
             "forbidden": "Not authorized",
             "user_profile": "User profile details",
             "user_not_found": "User not found",
-            "profile_updated": "Profile updated"
+            "profile_updated": "Profile updated",
+            "first_name_required": "First name is required",
+            "last_name_required": "Last name is required"
         },
         "token_expired": "Your token has expired",
         "token_not_valid": "Your token is not valid",
@@ -27,5 +32,14 @@
         "forbidden": "Not Authorized"
     },
     "required_fields_missing": "Required fields missing",
-    "greeting": "Hello!"
+    "greeting": "Hello!",
+    "record": {
+        "list_all":"List all records",
+        "details": "Record details",
+        "created": "Record created",
+        "updated": "Record updated ",
+        "deleted": "Record deleted",
+        "not_found": "Record not found",
+        "required_fields_missing":"One or more required fields are missing"
+    }
 }

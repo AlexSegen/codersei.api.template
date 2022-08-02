@@ -4,7 +4,7 @@ const getAll = async (req, res) => {
   try {
     const { statusCode, data, message } = await taskService.getAall(req.query);
 
-    return res.status(statusCode).json({ data, message });
+    return res.status(statusCode).json({ data, message: req.t(message) });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -14,9 +14,12 @@ const getOne = async (req, res) => {
   try {
     const { statusCode, data, message } = await taskService.getOne(req.params.id);
 
+    if(data == null)
+      return res.status(statusCode).json({ message: req.t(message) });
+
     return res.status(statusCode).json({
       data,
-      message,
+      message: req.t(message),
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -28,7 +31,7 @@ const create = async (req, res) => {
     const { body, user } = req;
 
     if (!body.title || !body.description)
-      return res.status(400).json({ message: "Required fields missing." });
+      return res.status(400).json({ message: req.t("record.required_fields_missing") });
 
     const { statusCode, data, message } = await taskService.create({
       title: body.title,
@@ -36,7 +39,7 @@ const create = async (req, res) => {
       author: user._id,
     });
 
-    return res.status(statusCode).json({ data, message });
+    return res.status(statusCode).json({ data, message: req.t(message)});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -46,13 +49,20 @@ const update = async (req, res) => {
   try {
     const { title, description, completed } = req.body;
 
+
+    if (!body.title || !body.description)
+      return res.status(400).json({ message: req.t("record.required_fields_missing") });
+
     const { statusCode, data, message } = await taskService.update(req.params.id, {
       title,
       description,
       completed,
     });
 
-    return res.status(statusCode).json({ data, message });
+    if(data == null)
+      return res.status(statusCode).json({ message: req.t(message) });
+
+    return res.status(statusCode).json({ data, message: req.t(message) });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -63,9 +73,9 @@ const remove = async (req, res) => {
     const { statusCode, data, message } = await taskService.remove(req.params.id);
 
     if(data == null)
-      return res.status(statusCode).json({ message });
+      return res.status(statusCode).json({ message: req.t(message) });
 
-    return res.status(statusCode).json({ data, message });
+    return res.status(statusCode).json({ data, message: req.t(message) });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

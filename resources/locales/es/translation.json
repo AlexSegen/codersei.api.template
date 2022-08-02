@@ -1,5 +1,8 @@
 {
     "auth": {
+        "email_required": "El email es requerido",
+        "email_invalid": "El email es inválido",
+        "password_required": "La contraseña es requerida",
         "login": {
             "success": "Inicio de sesión exitoso",
             "fail": "Contraseña o email incorrecto",
@@ -14,7 +17,9 @@
             "unauthorized": "No autorizado",
             "user_profile": "Detalles del perfil",
             "user_not_found": "Usuario no encontrado",
-            "profile_updated": "Perfil actualizado"
+            "profile_updated": "Perfil actualizado",
+            "first_name_required": "El nombre es requerido",
+            "last_name_required": "El apellido es requerido"
         },
         "token_expired": "El token actual ha expirado y ya no es válido",
         "token_not_valid": "El token es inválido",
@@ -27,5 +32,14 @@
         "forbidden": "No autorizado"
     },
     "required_fields_missing": "Campos requeridos faltantes",
-    "greeting": "¡hola!"
+    "greeting": "¡hola!",
+    "record": {
+        "list_all":"Listado de registros",
+        "details": "Detalles del registro",
+        "created": "Registro creado",
+        "updated": "Registro actualizado ",
+        "deleted": "Registro eliminado",
+        "not_found": "Registro no encontrado",
+        "required_fields_missing":"Uno o más campos requeridos faltantes"
+    }
 }

@@ -11,7 +11,7 @@ const getAall = async (query) => {
     .populate({ path: "author", select: "avatar first_name last_name" })
     .limit(limit).sort(sort);
 
-    return serviceResult(200, records, "All records");
+    return serviceResult(200, records, "record.list_all");
   } catch (error) {
     throw error;
   }
@@ -21,11 +21,14 @@ const getOne = async (id) => {
   try {
     const record = await Model.findById(id).populate({ path: "author", select: "avatar first_name last_name" });
 
-    return serviceResult(200, record, "Record found");
+    if (!record)
+      return serviceResult(404, null, `record.not_found`);
+    
+    return serviceResult(200, record, "record.details");
 
   } catch (error) {
     if (error.kind === "ObjectId")
-      return serviceResult(404, null, `Record not found with id ${id}`);
+      return serviceResult(404, null, `record.not_found`);
 
     throw error;
   }
@@ -45,7 +48,7 @@ const create = async ({ title, description, author }) => {
     record = await Model.findById(record._id)
     .populate({ path: "author", select: "avatar first_name last_name" });
 
-    return serviceResult(201, record, "Record created");
+    return serviceResult(201, record, "record.created");
   } catch (error) {
     throw error;
   }
@@ -62,10 +65,10 @@ const update = async (id, { title, description, completed }) => {
     updated = await Model.findById(updated._id)
     .populate({ path: "author", select: "avatar first_name last_name" });
 
-    return serviceResult(200, updated, "Record updated");
+    return serviceResult(200, updated, "record.updated");
   } catch (error) {
     if (error.kind === "ObjectId")
-      return serviceResult(404, null, null, `Record not found with id ${id}`);
+      return serviceResult(404, null, null, `record.not_found`);
 
     throw error;
   }
@@ -75,10 +78,10 @@ const remove = async (id) => {
   try {
     await Model.findByIdAndDelete(id);
 
-    return serviceResult(200, { _id: id }, "Record deleted");
+    return serviceResult(200, { _id: id }, "record.deleted");
   } catch (error) {
     if (error.kind === "ObjectId")
-      return serviceResult(404, null, null, `Record not found with id ${id}`);
+      return serviceResult(404, null, null, `record.not_found`);
 
     throw error;
   }
