@@ -1,0 +1,10 @@
+{
+    "auth": {
+        "login": {
+            "success": "Inicio de sesión exitoso",
+            "fail": "Contraseña o email incorrecto",
+            "not_found": "Usuario no encontrado"
+        }
+    },
+    "greeting": "¡hola!"
+}

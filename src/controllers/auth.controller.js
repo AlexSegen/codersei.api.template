@@ -47,7 +47,7 @@ const login = async (req, res) => {
 			user: { _id, first_name, last_name, email, avatar },
 			token,
 			refreshToken,
-		}, message });
+		}, message: req.t("auth.login.success") });
 
   } catch (error) {
     if (error instanceof ResponseError)
