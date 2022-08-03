@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const ResponseError = require("../helpers/responseError");
 const authService = require("../services/auth.service");
 
-
 const hashPassword = async (password) => await bcrypt.hash(password, 10);
 
 const register = async (req, res) => {
