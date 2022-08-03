@@ -16,7 +16,7 @@ i18next.use(Backend).use(i18nextMiddleware.LanguageDetector)
   .init(
     {
       backend: {
-        loadPath: path.resolve(__dirname, '../resources/locales/{{lng}}/{{ns}}.json')
+        loadPath: path.resolve(__dirname, './resources/locales/{{lng}}/{{ns}}.json')
       },
       debug: false,
       detection: {

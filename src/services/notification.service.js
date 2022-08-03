@@ -1,13 +1,16 @@
 const fs = require("fs");
+const path = require('path');
 
 const config = require("../config");
 const useSendgrid = require("../infrastructure/sendgrid");
 const { serviceResult } = require("../helpers/serviceResult");
 
+const templatesPath = path.join(__dirname, './resources/templates/');
+
 const sendRequestPasswordResetEmail = async ({ first_name, email }, token, t) => {
   try {
     let html = fs
-      .readFileSync("./templates/recovery-link.txt")
+      .readFileSync("./src/resources/templates/recovery-link.txt")
       .toString()
       .replace("{{subject}}", t.subject)
       .replace("{{paragraph1}}", t.paragraph1)
@@ -45,7 +48,7 @@ const sendRequestPasswordResetEmail = async ({ first_name, email }, token, t) =>
 const sendPasswordUpdatedEmail = async ({ first_name, email }, t) => {
   try {
     let html = fs
-      .readFileSync("./templates/password-updated.txt")
+      .readFileSync("./src/resources/templates/password-updated.txt")
       .toString()
       .replace("{{subject}}", t.subject)
       .replace("{{paragraph1}}", t.paragraph1)
