@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const ResponseError = require("../helpers/responseError");
 const authService = require("../services/auth.service");
+const { isEmpty } = require("../helpers/utils");
 
 const hashPassword = async (password) => await bcrypt.hash(password, 10);
 
@@ -8,10 +9,10 @@ const register = async (req, res) => {
   try {
     
 
-		if (!req.body.email)
+		if (isEmpty(req.body.email))
 			return res.status(400).json({ message: req.t("auth.email_required") });
 
-    if (!req.body.password)
+    if (isEmpty(req.body.password))
 			return res.status(400).json({ message: req.t("auth.password_required") });
 
     req.body.password = await hashPassword(req.body.password);
@@ -38,10 +39,10 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
 
-		if (!req.body.email)
+		if (isEmpty(req.body.email))
 			return res.status(400).json({ message: req.t("auth.email_required") });
 
-    if (!req.body.password)
+    if (isEmpty(req.body.password))
 			return res.status(400).json({ message: req.t("auth.password_required") });
 
     const user = req.body;
@@ -93,10 +94,10 @@ const updateProfile = async (req, res) => {
     
 		const user = req.user;
 
-    if (!req.body.first_name)
+    if (isEmpty(req.body.first_name))
       return res.status(400).json({ message: req.t("auth.profile.first_name_required") });
 
-    if (!req.body.last_name)
+    if (isEmpty(req.body.last_name))
       return res.status(400).json({ message: req.t("auth.profile.last_name_required") });
 
     const payload = {
@@ -153,7 +154,7 @@ const updatePassword = async (req, res) => {
 
     let password = req.body.password;
 
-    if (!password )
+    if (isEmpty(password))
       return res.status(400).json({ message: req.t("auth.profile.password_required") });
 
     password = await hashPassword(req.body.password);
@@ -176,7 +177,7 @@ const updatePassword = async (req, res) => {
 const requestPasswordReset = async (req, res) => {
   try {
 
-    if (!req.body.email)
+    if (isEmpty(req.body.email))
       return res.status(400).json({ message: req.t("auth.email_required") });
 
       const translations = {
@@ -198,7 +199,7 @@ const requestPasswordReset = async (req, res) => {
 const checkRecoveryToken = async (req, res) => {
   try {
 
-    if (!req.params.token)
+    if (isEmpty(req.params.token))
       return res.status(400).json({ message: req.t("auth.token_not_found") });
 
     const { statusCode, data, message } = await authService.checkRecoveryToken(req.params.token);

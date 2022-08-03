@@ -30,7 +30,7 @@ const create = async (req, res) => {
   try {
     const { body, user } = req;
 
-    if (!body.title || !body.description)
+    if (isEmpty(body.title) || isEmpty(body.description))
       return res.status(400).json({ message: req.t("record.required_fields_missing") });
 
     const { statusCode, data, message } = await taskService.create({
@@ -47,10 +47,10 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
+    
     const { title, description, completed } = req.body;
 
-
-    if (!body.title || !body.description)
+    if (isEmpty(title) || isEmpty(description))
       return res.status(400).json({ message: req.t("record.required_fields_missing") });
 
     const { statusCode, data, message } = await taskService.update(req.params.id, {
