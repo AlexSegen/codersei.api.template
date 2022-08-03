@@ -14,4 +14,4 @@ function serviceResult(statusCode, data, message, error) {
     };
   }
 
- module.exports = { serviceResult};
+ module.exports = { serviceResult };
