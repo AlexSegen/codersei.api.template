@@ -9,16 +9,18 @@ const notificationService = require("../services/notification.service");
 const ResponseError = require("../helpers/responseError");
 const { serviceResult } = require("../helpers/serviceResult");
 
-const register = async (user) => {
+const register = async (email, password) => {
   try {
-    const exists = await User.findOne({ email: user.email });
+    const exists = await User.findOne({ email });
 
     if (exists) return serviceResult(400, null, "auth.register.conflict");
 
-    user.password = bcrypt.hashSync(user.password, 10);
-    user.avatar = `https://gravatar.com/avatar/${utils.md5(user.email)}`;
-
-    user.identifier = uuid();
+    const user = {
+      email,
+      password,
+      avatar: `https://gravatar.com/avatar/${utils.md5(email)}`,
+      identifier: uuid()
+    }
 
     const record = await User.create(user);
 
@@ -150,8 +152,6 @@ const resetPassword = async ({password, token}, translations) => {
     if (!user)
       return serviceResult(404, null, "auth.user_not_found");
 
-    user.password = bcrypt.hashSync(password, 10);
-
     await User.findOneAndUpdate(
       { email: decoded.email },
       { password: user.password },
@@ -186,6 +186,26 @@ const updateAvatar = async (user, avatarUrl) => {
   }
 }
 
+
+const updatePassword = async (user, password) => {
+  try {
+
+    const record = await User.findByIdAndUpdate(user._id, {
+      password
+    }, {
+      new: true
+    });
+
+    if (!record)
+      return serviceResult(404, null, "auth.profile.user_not_found");
+
+    return serviceResult(200, record, "auth.profile.password_updated");
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -194,5 +214,6 @@ module.exports = {
   requestPasswordReset,
   checkRecoveryToken,
   resetPassword,
-  updateAvatar
+  updateAvatar,
+  updatePassword
 };

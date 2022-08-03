@@ -21,7 +21,9 @@
             "first_name_required": "First name is required",
             "last_name_required": "Last name is required",
             "avatar_updated": "Avatar updated",
-            "avatar_required": "Avatar is required"
+            "avatar_required": "Avatar is required",
+            "password_updated": "Password updated",
+            "password_required": "Password is required"
         },
         "password_reset": {
             "subject": "Password recovery",
